@@ -117,7 +117,6 @@ This documentation provides details about the Booking API endpoints. Each endpoi
     * Body:
       ```
       {
-        "id": 1,
         "booking_id": "123456789",
         "email": "johndoe@gmail.com",
         "first_name": "John",
@@ -130,15 +129,12 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
         "distance": 100,
-        "price": 1000,
+        "price": 1596,
         "instructions": "",
         "available_date": "07/30/2024",
         "promo_code": "",
         "payment_id": "",
         "quote_option": 0,
-        "vehicle_id": 1,
-        "delivery_id": 1,
-        "pickup_id": 1,
         "vehicle_details": {
           "year": "1998|2020|2021|2014",
           "make": "Toyota|Honda|Ford|BMW",
@@ -218,15 +214,12 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
         "distance": 100,
-        "price": 1000,
+        "price": 1596,
         "instructions": "Handle with care.",
         "available_date": "07/30/2024",
         "promo_code": "SAVE20",
         "payment_id": "PAY123456",
         "quote_option": 0,
-        "vehicle_id": 1,
-        "delivery_id": 1,
-        "pickup_id": 1,
         "vehicle_details": {
           "year": "1998|2020|2021|2014",
           "make": "Toyota|Honda|Ford|BMW",
