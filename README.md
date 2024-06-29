@@ -53,7 +53,7 @@ This documentation provides details about the Booking API endpoints. Each endpoi
     * business_name (String): Business name, if applicable (max 50 char)
     * quote_date (String): Date the quote was given (MM/DD/YYYY)
     * book_date (String): Date the booking was made (MM/DD/YYYY)
-    * order_status (Int): Status of the order (0: Quote Given, 1: New Order, 2: Payment Approved)
+    * order_status (Int): Status of the order (1: Quote Given, 2: New Order, 3: Payment Approved)
     * ship_from (String): Origin address (max 60 char)
     * ship_to (String): Destination address (max 60 char)
     * distance (Int): Distance of the shipment (calculated distance between ship_from and ship_to)
@@ -125,7 +125,7 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "business_name": "",
         "quote_date": "06/27/2024",
         "book_date": "",
-        "order_status": 0,
+        "order_status": 1,
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
         "distance": 100,
@@ -210,7 +210,7 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "business_name": "Doe Enterprises",
         "quote_date": "06/27/2024",
         "book_date": "06/27/2024",
-        "order_status": 1,
+        "order_status": 2,
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
         "distance": 100,
