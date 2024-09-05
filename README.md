@@ -1,6 +1,6 @@
-# Wimple Auto Transport API Documentation
-
 <a href="https://www.wimplesolutions.com/" target="_blank" rel="noreferrer"> <img src="https://www.wimplesolutions.com/_next/image?url=%2Fwimplelogo2.png&w=3840&q=75" /> </a>
+
+# Wimple Auto Transport API Documentation
 
 ## Authorize
 #### Using curl</br>
@@ -56,13 +56,15 @@ This documentation provides details about the Booking API endpoints. Each endpoi
     * order_status (Int): Status of the order (1: Quote Given, 2: New Order, 3: Payment Approved)
     * ship_from (String): Origin address (max 60 char)
     * ship_to (String): Destination address (max 60 char)
+    * ship_from_state (String): Long origin state name (max 24 char)
+    * ship_to_state (String): Long destination state name (max 24 char)
     * distance (Int): Distance of the shipment (calculated distance between ship_from and ship_to)
     * price (Int): Price of the shipment (call price-calculator api)
     * instructions (String): Special instructions (max 500 char)
     * available_date (String): Available date for shipment (MM/DD/YYYY)
     * promo_code (String): Applied promo code (max 255 char)
     * payment_id (String): Payment ID (paypal or stripe payment) (max 255 char)
-    * quote_option (Int): Quote option selected (0: Discounted Price, 1: Express Price)
+    * quote_option (Int): Quote option selected (0: Cash Price, 1: Regular Price)
     * vehicle_id (Int): Unique vehicle ID (relation with vehicle details id)
     * delivery_id (Int): Unique delivery ID (relation with delivery details id)
     * pickup_id (Int): Unique pickup ID (relation with pickup details id)
@@ -128,6 +130,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "order_status": 1,
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
+        "ship_from_state": "Long state name",
+        "ship_to_state": "Long state name",
         "distance": 100,
         "price": 1000,
         "instructions": "",
@@ -213,6 +217,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "order_status": 2,
         "ship_from": "State, ST, ZIP",
         "ship_to": "State, ST, ZIP",
+        "ship_from_state": "Long state name",
+        "ship_to_state": "Long state name",
         "distance": 100,
         "price": 1596,
         "instructions": "Handle with care.",
@@ -292,8 +298,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "distance": 100,
         "transport_type": 1,
         "vehicle_conditions": "2",
-        "ship_from_state": "NY",
-        "ship_to_state": "TX",
+        "ship_from_state": "New York",
+        "ship_to_state": "Texas",
         "body_types": "Sedan"
       }
       ```
@@ -302,7 +308,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
     * Body: 
       ```
       {
-        "price": 599
+        "total_regular" (cash price): 599
+        "total_express" (regular price): 610
       }
       ```
     #### Error Response:
@@ -340,8 +347,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
         "distance": 100,
         "transport_type": 1,
         "vehicle_conditions": "1|2|1|1",
-        "ship_from_state": "NY",
-        "ship_to_state": "TX",
+        "ship_from_state": "New York",
+        "ship_to_state": "Texas",
         "body_types": "Sedan|Sedan|Truck|SUV"
       }
       ```
@@ -350,7 +357,8 @@ This documentation provides details about the Booking API endpoints. Each endpoi
     * Body: 
       ```
       {
-        "price": 1596
+        "total_regular" (cash price): 599
+        "total_express" (regular price): 610
       }
       ```
     #### Error Response:
