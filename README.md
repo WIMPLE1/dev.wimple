@@ -42,345 +42,322 @@ This documentation provides details about the Booking API endpoints. Each endpoi
 
 
 ### Data Types: </br>
+```
+BookingDetails:
+  booking_id (String): Unique booking identifier (min 10 max 18 char)
+  email (String): Customer's email address (max 255 char)
+  first_name (String): Customer's first names (max 20 char)
+  last_name (String): Customer's last name (max 20 char)
+  phone_number (String): Customer's phone number (max 20 char)
+  business_name (String): Business name, if applicable (max 50 char)
+  quote_date (DateTime): Date the quote was given
+  booking_date (DateTime): Date the booking was made
+  order_status (Int): Status of the order (1: Quote Given, 2: New Order, 3: Payment Approved)
+  instructions (String): Special instructions (max 500 char)
+  available_date (String): Available date for shipment (MM/DD/YYYY)
+  promo_code (String): Applied promo code (max 255 char)
+  payment_id (String): Payment ID (paypal or stripe payment) (max 255 char)
+  quote_option (Int): Quote option selected (0: Cash Price, 1: Regular Price)
+  created_at (DateTime): Current time
+  pickup_location: {
+    city (String): City for pickup (max 100 char)
+    state (String): State for pickup (short name) (max 2 char)
+    zip (String): Zip code for pickup (max 10 char)
+    street_address (String): Street address for pickup (max 100 char)
+    suite (String): Suite or apartment number (max 30 char)
+    is_business (Int): Indicates if pickup is from a business (0: No, 1: Yes)
+    first_name (String): First name of the recipient (max 20 char)
+    last_name (String): Last name of the recipient (max 20 char)
+    phone_number (String): Phone number of the recipient (max 20 char)
+  }
+  delivery_location: {
+    city (String): City for delivery (max 100 char)
+    state (String): State for delivery (short name) (max 2 char)
+    zip (String): Zip code for delivery (max 10 char)
+    street_address (String): Street address for delivery (max 100 char)
+    suite (String): Suite or apartment number (max 30 char)
+    is_business (Int): Indicates if delivery is to a business (0: No, 1: Yes)
+    first_name (String): First name of the recipient (max 20 char)
+    last_name (String): Last name of the recipient (max 20 char)
+    phone_number (String): Phone number of the recipient (max 20 char)
+  }
+  pricing_details {
+    distance (Float): Distance of the shipment (calculated distance between pickup location and delivery location)
+    calculated_price (Float): Call the price calculator
+    regular_price (Float): calculated_price * 1.20
+    cash_price (Float): calculated_price * 1.17
+    price_per_mile (Float): Call the price calculator
+    confidence (Float): Call the price calculator
+    trailer_type (Int): 1: Open, 2: Enclosed
+    cash_price_discount (Float): Discount amount for cash price
+    regular_price_discount (Float): Discount amount for regular price
+    vehicles: (Array): {
+      [
+        VINValue (String): VIN value, if applicable (max 17 char) 
+        is_inoperable (Boolean): true: Operable, false: Inoperable
+        body (String): max 50 char
+        make (String): max 50 char
+        model (String): max 50 char
+        year (String): max 4 char
+      ]
+    }
+  }
 
-* Booking Details:
-    * id (Int): Auto-incremented booking ID
-    * booking_id (String): Unique booking identifier (min 10 max 30 char)
-    * email (String): Customer's email address (max 255 char)
-    * first_name (String): Customer's first names (max 20 char)
-    * last_name (String): Customer's last name (max 20 char)
-    * phone_number (String): Customer's phone number (max 20 char)
-    * business_name (String): Business name, if applicable (max 50 char)
-    * quote_date (String): Date the quote was given (MM/DD/YYYY)
-    * book_date (String): Date the booking was made (MM/DD/YYYY)
-    * order_status (Int): Status of the order (1: Quote Given, 2: New Order, 3: Payment Approved)
-    * ship_from (String): Origin address (max 60 char)
-    * ship_to (String): Destination address (max 60 char)
-    * ship_from_state (String): Long origin state name (max 24 char)
-    * ship_to_state (String): Long destination state name (max 24 char)
-    * distance (Int): Distance of the shipment (calculated distance between ship_from and ship_to)
-    * price (Int): Price of the shipment (call price-calculator api)
-    * instructions (String): Special instructions (max 500 char)
-    * available_date (String): Available date for shipment (MM/DD/YYYY)
-    * promo_code (String): Applied promo code (max 255 char)
-    * payment_id (String): Payment ID (paypal or stripe payment) (max 255 char)
-    * quote_option (Int): Quote option selected (0: Cash Price, 1: Regular Price)
-    * vehicle_id (Int): Unique vehicle ID (relation with vehicle details id)
-    * delivery_id (Int): Unique delivery ID (relation with delivery details id)
-    * pickup_id (Int): Unique pickup ID (relation with pickup details id)
-
-<br>
-
-* Vehicle Details:
-    * id (Int): Auto-incremented vehicle details ID
-    * year (String): Year of the vehicle, multiple years can be joined by | (max 50 char)
-    * make (String): Make of the vehicle, multiple makes can be joined by | (max 140 char)
-    * model (String): Model of the vehicle, multiple models can be joined by | (max 410 char)
-    * body (String): Body type of the vehicle, multiple body types can be joined by | (max 370 char)
-    * vehicle_condition (String): Condition of the vehicle, multiple conditions can be joined by | (1: Running, 2: Non-Running) (max 20 char)
-    * transport_type (Int): Transport type (1: Open, 2: Enclosed)
-
-<br>
-
-* Delivery Details:
-    * id (Int): Auto-incremented delivery details ID
-    * street_address (String): Street address for delivery (max 100 char)
-    * suite (String): Suite or apartment number (max 30 char)
-    * city (String): City for delivery (max 28 char)
-    * state (String): State for delivery (max 15 char)
-    * zip_code (String): Zip code for delivery (max 5 char)
-    * is_business (Int): Indicates if delivery is to a business (0: No, 1: Yes)
-    * full_name (String): Full name of the recipient (max 40 char)
-    * phone_number (String): Phone number of the recipient (max 20 char)
-
-<br>
-
-* Pickup Details:
-    * id (Int): Auto-incremented pickup details ID
-    * street_address (String): Street address for pickup (max 100 char)
-    * suite (String): Suite or apartment number (max 30 char)
-    * city (String): City for pickup (max 28 char)
-    * state (String): State for pickup (max 15 char)
-    * zip_code (String): Zip code for pickup (max 5 char)
-    * is_business (Int): Indicates if pickup is from a business (0: No, 1: Yes)
-    * full_name (String): Full name of the sender (max 40 char)
-    * phone_number (String): Phone number of the sender (max 20 char)
-
+```
 
 ### Endpoints
 
-1. Add Booking
+1. Create Booking
     #### Request: 
-    * URL: https://www.wimplesolutions.com/api/booking/add
-    * Method: POST
-    * Headers:
+    - **URL:** https://www.wimplesolutions.com/api/v1/booking/create
+    - **Method:** POST
+    - **Headers:**
         * Content-Type: application/json
         * x-api-key: YOUR_API_KEY
-    * Body:
-      ```
+    - **Body:**
+      ```json
       {
-        "booking_id": "123456789",
-        "email": "johndoe@gmail.com",
+        "booking_id": "ABCD123456",
+        "email": "customer@example.com",
         "first_name": "John",
         "last_name": "Doe",
-        "phone_number": "",
-        "business_name": "",
-        "quote_date": "06/27/2024",
-        "book_date": "",
-        "order_status": 1,
-        "ship_from": "State, ST, ZIP",
-        "ship_to": "State, ST, ZIP",
-        "ship_from_state": "Long state name",
-        "ship_to_state": "Long state name",
-        "distance": 100,
-        "price": 1000,
-        "instructions": "",
-        "available_date": "07/30/2024",
-        "promo_code": "",
-        "payment_id": "",
-        "quote_option": 0,
-        "vehicle_details": {
-            "year": "1998|2020|2021|2014",
-            "make": "Toyota|Honda|Ford|BMW",
-            "model": "Camry|Accord|F-150|X5",
-            "body": "Sedan|Sedan|Truck|SUV",
-            "vehicle_condition": "1|2|2|1",
-            "transport_type": 1
+        "phone_number": "+1234567890",
+        "business_name": "JD Enterprises",
+        "quote_date": "2025-03-18T10:00:00Z",
+        "booking_date": "2025-03-18T11:00:00Z",
+        "order_status": 2,
+        "instructions": "Handle with care.",
+        "available_date": "03/20/2025",
+        "promo_code": "SAVE10",
+        "payment_id": "PAYPAL123456",
+        "quote_option": 1,
+        "created_at": "2025-03-18T12:00:00Z",
+        "pickup_location": {
+          "city": "Los Angeles",
+          "state": "CA",
+          "zip": "90001",
+          "street_address": "123 Main St",
+          "suite": "Apt 4B",
+          "is_business": 1,
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "phone_number": "+1987654321"
         },
-        "delivery_details": {
-            "street_address": "",
-            "suite": "",
-            "city": "",
-            "state": "",
-            "zip_code": "",
-            "is_business": 0,
-            "full_name": "",
-            "phone_number": ""
+        "delivery_location": {
+          "city": "New York",
+          "state": "NY",
+          "zip": "10001",
+          "street_address": "456 Broadway Ave",
+          "suite": "Suite 10",
+          "is_business": 0,
+          "first_name": "Mike",
+          "last_name": "Smith",
+          "phone_number": "+1123456789"
         },
-        "pickup_details": {
-            "street_address": "",
-            "suite": "",
-            "city": "",
-            "state": "",
-            "zip_code": "",
-            "is_business": 0,
-            "full_name": "",
-            "phone_number": ""
+        "pricing_details": {
+          "distance": 2800.5,
+          "calculated_price": 1500.0,
+          "regular_price": 1800.0,
+          "cash_price": 1755.0,
+          "price_per_mile": 0.65,
+          "confidence": 0.85,
+          "trailer_type": 1,
+          "cash_price_discount": 50.0,
+          "regular_price_discount": 30.0,
+          "vehicles": [
+            {
+              "VINValue": "1HGCM82633A123456",
+              "is_inoperable": false,
+              "body": "Sedan",
+              "make": "Honda",
+              "model": "Accord",
+              "year": "2022"
+            },
+            {
+              "VINValue": "2T3WFREV3DW123456",
+              "is_inoperable": true,
+              "body": "SUV",
+              "make": "Toyota",
+              "model": "RAV4",
+              "year": "2020"
+            }
+          ]
         }
       }
       ```
-    #### Response:
-    * Status: 201 OK
-    * Body: 
-      ```
-      {
-        <booking data>
-      }
-      ```
-    #### Error Response:
-    * Status: 405 Bad Request
-    * Body: 
-      ```
-      {
-        "error": "Method not allowed"
-      }
-      ```
-    * Status: 500 Unable to create booking
-    * Body: 
-      ```
-      {
-        "error": "Unable to create booking"
-      }
-      ```
+      **Success Response**:
+      - **Code**: 201
+      - **Content**: Complete booking object
 
+      **Error Response**:
+      - **Code**: 500
+        - **Content**: `{ "error": "Unable to create booking", "details": "Error message" }`
 </br>
 
-2. Update Booking
+ 2. Update Booking
     #### Request: 
-    * URL: https://www.wimplesolutions.com/api/booking/update
-    * Method: PUT
-    * Headers:
+    - **URL:** https://www.wimplesolutions.com/api/v1/booking/update?id=ABCD123456
+    - **Method:** PUT
+    - **Query Parameters**:
+      - `id` (required): Booking ID
+    - **Headers**:
         * Content-Type: application/json
         * x-api-key: YOUR_API_KEY
-    * Body:
-      ```
+    - **Body**:
+      ```json
       {
-        "id": 1,
-        "booking_id": "123456789",
-        "email": "johndoe@gmail.com",
+        "booking_id": "ABCD123456",
+        "email": "customer@example.com",
         "first_name": "John",
         "last_name": "Doe",
-        "phone_number": "123-456-7890",
-        "business_name": "Doe Enterprises",
-        "quote_date": "06/27/2024",
-        "book_date": "06/27/2024",
+        "phone_number": "+1234567890",
+        "business_name": "JD Enterprises",
+        "quote_date": "2025-03-18T10:00:00Z",
+        "booking_date": "2025-03-18T11:00:00Z",
         "order_status": 2,
-        "ship_from": "State, ST, ZIP",
-        "ship_to": "State, ST, ZIP",
-        "ship_from_state": "Long state name",
-        "ship_to_state": "Long state name",
-        "distance": 100,
-        "price": 1596,
         "instructions": "Handle with care.",
-        "available_date": "07/30/2024",
-        "promo_code": "SAVE20",
-        "payment_id": "PAY123456",
-        "quote_option": 0,
-        "vehicle_id": 1,
-        "delivery_id": 1,
-        "pickup_id": 1,
-        "vehicle_details": {
-            "year": "1998|2020|2021|2014",
-            "make": "Toyota|Honda|Ford|BMW",
-            "model": "Camry|Accord|F-150|X5",
-            "body": "Sedan|Sedan|Truck|SUV",
-            "vehicle_condition": "1|2|2|1",
-            "transport_type": 1
+        "available_date": "03/20/2025",
+        "promo_code": "SAVE10",
+        "payment_id": "PAYPAL123456",
+        "quote_option": 1,
+        "created_at": "2025-03-18T12:00:00Z",
+        "pickup_location": {
+          "city": "Los Angeles",
+          "state": "CA",
+          "zip": "90001",
+          "street_address": "123 Main St",
+          "suite": "Apt 4B",
+          "is_business": 1,
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "phone_number": "+1987654321"
         },
-        "delivery_details": {
-            "street_address": "789 Destination Ave",
-            "suite": "Suite 101",
-            "city": "Destination City",
-            "state": "Destination",
-            "zip_code": "67890",
-            "is_business": 0,
-            "full_name": "John Doe",
-            "phone_number": "098-765-4321"
+        "delivery_location": {
+          "city": "New York",
+          "state": "NY",
+          "zip": "10001",
+          "street_address": "456 Broadway Ave",
+          "suite": "Suite 10",
+          "is_business": 0,
+          "first_name": "Mike",
+          "last_name": "Smith",
+          "phone_number": "+1123456789"
         },
-        "pickup_details": {
-            "street_address": "123 Origin St",
-            "suite": "Suite 202",
-            "city": "Origin City",
-            "state": "Origin",
-            "zip_code": "12345",
-            "is_business": 1,
-            "full_name": "John Doe",
-            "phone_number": "123-456-7890"
+        "pricing_details": {
+          "distance": 2800.5,
+          "calculated_price": 1500.0,
+          "regular_price": 1800.0,
+          "cash_price": 1755.0,
+          "price_per_mile": 0.65,
+          "confidence": 0.85,
+          "trailer_type": 1,
+          "cash_price_discount": 50.0,
+          "regular_price_discount": 30.0,
+          "vehicles": [
+            {
+              "VINValue": "1HGCM82633A123456",
+              "is_inoperable": false,
+              "body": "sedan",
+              "make": "Honda",
+              "model": "Accord",
+              "year": "2022"
+            },
+            {
+              "VINValue": "2T3WFREV3DW123456",
+              "is_inoperable": true,
+              "body": "suv",
+              "make": "Toyota",
+              "model": "RAV4",
+              "year": "2020"
+            }
+          ]
         }
       }
       ```
-    #### Response:
-    * Status: 201 OK
-    * Body: 
-      ```
-      {
-        <booking data>
-      }
-      ```
-    #### Error Response:
-    * Status: 405 Bad Request
-    * Body: 
-      ```
-      {
-        "error": "Method not allowed"
-      }
-      ```
-    * Status: 500 Unable to update booking
-    * Body: 
-      ```
-      {
-        "error": "Unable to update booking"
-      }
-      ```
+      **Success Response**:
+      - **Code**: 200
+      - **Content**: `{ "message": "BookingDetails updated successfully.", "data": {...} }`
+
+      **Error Responses**:
+      - **Code**: 400
+        - **Content**: `{ "error": "BookingDetails ID is required." }`
+      - **Code**: 500
+        - **Content**: `{ "error": "An error occurred while updating the BookingDetails." }`
 
 </br>
 
 3. Calculate Price
     #### Request: 
-    * URL: https://www.wimplesolutions.com/api/price-calculator/get
-    * Method: POST
-    * Headers:
+    - **URL:** https://www.wimplesolutions.com/api/v1/price-calculator/post
+    - **Method:** POST
+    - **Headers:**
         * Content-Type: application/json
         * x-api-key: YOUR_API_KEY
-    * Body:
-      ```
+    - **Body:**
+      ```json
       {
-        "distance": 100,
-        "transport_type": 1,
-        "vehicle_conditions": "2",
-        "ship_from_state": "New York",
-        "ship_to_state": "Texas",
-        "body_types": "Sedan"
+        "pickup": {
+          "city": "Los Angeles",
+          "state": "CA",
+          "zip": "90001"
+        },
+        "delivery": {
+          "city": "Dallas", 
+          "state": "TX",
+          "zip": "75001"
+        },
+        "vehicles": [
+          {
+            "year": "2020",
+            "make": "Ford",
+            "model": "F-150",
+            "type": "sedan",
+            "is_inoperable": false
+          }
+        ],
+        "trailer_type": "open"
       }
       ```
-    #### Response:
-    * Status: 200 OK
-    * Body: 
-      ```
+      **Success Response**:
+      - **Code**: 200
+      - **Content**:
+      ```json
       {
-        "total_regular" (cash price): 599
-        "total_express" (regular price): 610
-      }
-      ```
-    #### Error Response:
-    * Status: 400 Bad Request
-    * Body: 
-      ```
-      {
-        "error": "Missing required fields"
-      }
-      ```
-    * Status: 405 Method not allowed
-    * Body: 
-      ```
-      {
-        "error": "Method not allowed"
-      }
-      ```
-    * Status: 500 Internal Server Error
-    * Body: 
-      ```
-      {
-        "error": "Internal server error"
-      }
-      ```
-4. Multi car Calculate Price
-    #### Request: 
-    * URL: https://www.wimplesolutions.com/api/price-calculator/get
-    * Method: POST
-    * Headers:
-        * Content-Type: application/json
-        * x-api-key: YOUR_API_KEY
-    * Body:
-      ```
-      {
-        "distance": 100,
-        "transport_type": 1,
-        "vehicle_conditions": "1|2|1|1",
-        "ship_from_state": "New York",
-        "ship_to_state": "Texas",
-        "body_types": "Sedan|Sedan|Truck|SUV"
-      }
-      ```
-    #### Response:
-    * Status: 200 OK
-    * Body: 
-      ```
-      {
-        "total_regular" (cash price): 599
-        "total_express" (regular price): 610
-      }
-      ```
-    #### Error Response:
-    * Status: 400 Bad Request
-    * Body: 
-      ```
-      {
-        "error": "Missing required fields"
-      }
-      ```
-    * Status: 405 Method not allowed
-    * Body: 
-      ```
-      {
-        "error": "Method not allowed"
-      }
-      ```
-    * Status: 500 Internal Server Error
-    * Body: 
-      ```
-      {
-        "error": "Internal server error"
+          "meta": {
+              "status": "success"
+          },
+          "data": {
+              "price": 750,
+              "price_per_mile": 0.52,
+              "confidence": 86
+          }
       }
       ```
 
+      **Error Responses**:
+      - **Code**: 400
+        - **Content**: `{ "error": "Bad request - Invalid input parameters" }`
+      - **Code**: 401
+        - **Content**: `{ "error": "Unauthorized - Invalid API key" }`
+      - **Code**: 422
+        - **Content**: `{ "error": "Unprocessable Entity - Invalid data format" }`
+      - **Code**: 429
+        - **Content**: `{ "error": "Too Many Requests - Rate limit exceeded" }`
+      - **Code**: 500
+        - **Content**: `{ "error": "Failed to calculate price" }`
+
+
+## Error Codes
+
+| Status Code | Meaning                  | Description                                           |
+|-------------|--------------------------|-------------------------------------------------------|
+| 200         | OK                       | The request was successful                            |
+| 201         | Created                  | The resource was successfully created                 |
+| 400         | Bad Request              | The request was invalid or cannot be processed        |
+| 401         | Unauthorized             | Authentication failed or not provided                 |
+| 403         | Forbidden                | Authentication succeeded but permission was denied    |
+| 404         | Not Found                | The requested resource was not found                  |
+| 405         | Method Not Allowed       | The HTTP method is not supported for this endpoint    |
+| 422         | Unprocessable Entity     | The request was well-formed but has semantic errors   |
+| 429         | Too Many Requests        | Rate limit has been exceeded                          |
+| 500         | Internal Server Error    | An unexpected error occurred on the server            |
