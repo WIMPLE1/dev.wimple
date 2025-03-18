@@ -311,11 +311,11 @@ BookingDetails:
             "year": "2020",
             "make": "Ford",
             "model": "F-150",
-            "type": "sedan",
+            "type": "sedan", ( Enum: "sedan" "suv" "van" "coupe_2_doors" "pickup_2_doors" "pickup_4_doors" )
             "is_inoperable": false
           }
         ],
-        "trailer_type": "open"
+        "trailer_type": "open" or "enclosed"
       }
       ```
       **Success Response**:
