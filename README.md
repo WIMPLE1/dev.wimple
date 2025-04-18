@@ -83,11 +83,11 @@ BookingDetails:
   }
   pricing_details {
     distance (Float): Distance of the shipment (calculated distance between pickup location and delivery location)
-    calculated_price (Float): Call the price calculator
+    calculated_price (Float): Request to the price calculator api
     regular_price (Float): calculated_price * 1.20
     cash_price (Float): calculated_price * 1.17
-    price_per_mile (Float): Call the price calculator
-    confidence (Float): Call the price calculator
+    price_per_mile (Float): Request to the price calculator api
+    confidence (Float): Request to the price calculator api
     trailer_type (Int): 1: Open, 2: Enclosed
     cash_price_discount (Float): Discount amount for cash price
     regular_price_discount (Float): Discount amount for regular price
@@ -287,6 +287,8 @@ BookingDetails:
 </br>
 
 3. Calculate Price
+    > This endpoint calculates shipping prices that can be used in the `pricing_details` section when creating or updating bookings.
+    
     #### Request: 
     - **URL:** https://www.wimplesolutions.com/api/v1/price-calculator/post
     - **Method:** POST
@@ -353,6 +355,15 @@ BookingDetails:
       - **Code**: 500
         - **Content**: `{ "error": "Failed to calculate price" }`
 
+    #### Usage in Booking Flow:
+    1. Call this endpoint to get price calculations
+    2. Use the response values to populate the `pricing_details` object:
+       - `data.price` → `calculated_price`
+       - `data.price_per_mile` → `price_per_mile`
+       - `data.confidence` → `confidence`
+    3. Calculate `regular_price` as `calculated_price * 1.20`
+    4. Calculate `cash_price` as `calculated_price * 1.17`
+    5. Include the complete `pricing_details` object when creating or updating a booking
 
 ## Error Codes
 
