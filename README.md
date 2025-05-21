@@ -84,8 +84,8 @@ BookingDetails:
   pricing_details {
     distance (Float): Distance of the shipment (calculated distance between pickup location and delivery location)
     calculated_price (Float): Request to the price calculator api
-    regular_price (Float): calculated_price * 1.20
-    cash_price (Float): calculated_price * 1.17
+    regular_price (Float): calculated_price * 1.43
+    cash_price (Float): calculated_price * 1.40
     price_per_mile (Float): Request to the price calculator api
     confidence (Float): Request to the price calculator api
     trailer_type (Int): 1: Open, 2: Enclosed
@@ -361,8 +361,8 @@ BookingDetails:
        - `data.price` → `calculated_price`
        - `data.price_per_mile` → `price_per_mile`
        - `data.confidence` → `confidence`
-    3. Calculate `regular_price` as `calculated_price * 1.20`
-    4. Calculate `cash_price` as `calculated_price * 1.17`
+    3. Calculate `regular_price` as `calculated_price * 1.43`
+    4. Calculate `cash_price` as `calculated_price * 1.40`
     5. Include the complete `pricing_details` object when creating or updating a booking
 
 ## Error Codes
