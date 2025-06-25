@@ -27,7 +27,7 @@ Content-Type: application/json
 {
   "token": "string",
   "tokenExpiryDate": "2024-12-31T23:59:59Z",
-  "roles": ["CLIENT"]
+  "roles": ["PARTNER"]
 }
 ```
 
@@ -80,7 +80,7 @@ Authorization: Bearer <jwt_token>
   "id": "integer",
   "username": "string",
   "email": "string",
-  "roles": ["CLIENT"]
+  "roles": ["PARTNER"]
 }
 ```
 
@@ -105,7 +105,7 @@ Content-Type: application/json
 Authorization: Bearer <jwt_token>
 ```
 
-**Required Roles:** `CLIENT`
+**Required Roles:** `PARTNER`
 
 **Request Body:**
 ```json
@@ -204,4 +204,4 @@ All endpoints return error responses in the following format:
 - Prices are returned as integers (cents) or rounded to 2 decimal places
 - The `trailer_type` field accepts either "open" or "enclosed"
 - Vehicle `type` **must be one of**: "sedan", "suv", "van", "coupe_2_doors", "pickup_2_doors", "pickup_4_doors"
-- Different pricing tiers are applied based on user roles (CLIENT vs ADMIN)
+- Different pricing tiers are applied based on user roles (PARTNER vs ADMIN)
