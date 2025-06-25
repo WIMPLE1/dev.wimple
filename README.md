@@ -64,7 +64,7 @@ Authorization: Bearer <jwt_token>
 
 ---
 
-### 4. Get Current User
+### 3. Get Current User
 **GET** `/v1/auth/me`
 
 Get the current authenticated user's profile information.
@@ -94,7 +94,7 @@ Authorization: Bearer <jwt_token>
 
 ## Price Calculator Endpoint
 
-### 5. Calculate Recommended Price
+### 4. Calculate Recommended Price
 **POST** `/v1/price-calculator`
 
 Calculate recommended shipping price based on pickup/delivery locations and vehicle details.
